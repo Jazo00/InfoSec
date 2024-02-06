@@ -37,11 +37,11 @@
                     $lastName = $_POST['lastName'];
                     $emailAdd = $_POST['emailAdd'];
                     $courseEnrolled = $_POST['courseEnrolled'];
-                    $enrollStatus = $_POST['enrollStatus'];
+                    
 
                     $id = $_SESSION['id'];
 
-                    $edit_query = mysqli_query($con,"UPDATE users SET studentNumber='$studentNumber', firstName='$firstName', middleInitial='$middleInitial', lastName='$lastName', emailAdd='$emailAdd', courseEnrolled='$courseEnrolled', enrollStatus='$enrollStatus' WHERE Id=$id ") or die("Error Occured");
+                    $edit_query = mysqli_query($con,"UPDATE users SET studentNumber='$studentNumber', firstName='$firstName', middleInitial='$middleInitial', lastName='$lastName', emailAdd='$emailAdd', courseEnrolled='$courseEnrolled' WHERE Id=$id ") or die("Error Occured");
                     if($edit_query){
                         echo "<div class='message'>
                                 <p>Your Profile is Up to date!</p>
@@ -58,7 +58,6 @@
                         $res_middleInitial = $result['middleInitial'];
                         $res_lastName = $result['lastName'];
                         $res_courseEnrolled = $result['courseEnrolled'];
-                        $res_statusEnrolled = $result['enrollStatus'];
                     }
             ?>
             <header>Edit Profile</header>
@@ -87,10 +86,10 @@
                     <label for="courseEnrolled">Enrolled Course</label>
                     <input type="text" name="courseEnrolled" id="courseEnrolled" autocomplete="off" required>
                 </div>
-                <div class="field input"> 
+                <!--<div class="field input"> 
                     <label for="enrollStatus">Enrollment Status</label>
                     <input type="text" name="enrollStatus" id="enrollStatus" autocomplete="off" required>
-                </div>    
+                </div>-->
                 <div class="field">
                     <input type="submit" name="submit" class="btn" value="Update" required>
                 </div>

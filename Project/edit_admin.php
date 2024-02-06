@@ -1,5 +1,6 @@
 <?php
 include 'config.php';
+
 $id=$_GET['updateid'];
 $sql="Select * from users where id=$id";
 $result=mysqli_query($con,$sql);
@@ -10,22 +11,34 @@ $middleInitial=$row['middleInitial'];
 $lastName=$row['lastName'];
 $emailAdd=$row['emailAdd'];
 $courseEnrolled=$row['courseEnrolled'];
-$enrollStatus=$row['enrollStatus'];
+$enrollmentStatus=$row['enrollmentStatus'];
 
 if(isset($_POST['submit'])){
-    $name=$_POST['name'];
-    $desc=$_POST['desc'];
-    $offer=$_POST['offer'];
+  $studentNumber = $_POST['studentNumber'];
+  $firstName = $_POST['firstName'];
+  $middleInitial = $_POST['middleInitial'];
+  $lastName = $_POST['lastName'];
+  $emailAdd = $_POST['emailAdd'];
+  $courseEnrolled = $_POST['courseEnrolled'];
+  $enrollmentStatus=$_POST['enrollmentStatus'];
 
-
-    $sql="UPDATE users SET studentNumber='$studentNumber', firstName='$firstName', middleInitial='$middleInitial', lastName='$lastName', emailAdd='$emailAdd', courseEnrolled='$courseEnrolled', enrollStatus='$enrollStatus' WHERE iD=$id";
-    $result=mysqli_query($con,$sql);
-    if($result){
-        header('location:admin.php');
-    } else{
-        die(mysqli_error($con));
-    }
-}
+  //to prevent SQL injection
+  $sql = "UPDATE users SET studentNumber=$studentNumber, firstName=$firstName, middleInitial=$middleInitial, lastName=$lastName, emailAdd=$emailAdd, courseEnrolled=$courseEnrolled, enrollmentStatus=$enrollmentStatus WHERE iD=$id";
+  $statement = mysqli_prepare($con, $sql);
+  
+  // Assuming $con is your mysqli connection object
+  
+  mysqli_stmt_bind_param($statement, "sssssssi", $studentNumber, $firstName, $middleInitial, $lastName, $emailAdd, $courseEnrolled, $enrollmentStatus, $id);
+  $result = mysqli_stmt_execute($statement);
+  
+  if ($result) {
+      header('location:admin.php');
+  } else {
+      die(mysqli_error($con));
+  }
+  
+  mysqli_stmt_close($statement);
+} 
 ?>
 
 <!doctype html>
@@ -70,7 +83,7 @@ if(isset($_POST['submit'])){
         </div>
         <div class="form-group">
             <label>Middle Initial</label>
-            <input type="text" class="form-control" name="middleInitial" autocomplete="off" required value=<?php echo $middleInitial;?>>
+            <input type="text" class="form-control" name="middleInitial" autocomplete="off" value=<?php echo $middleInitial;?>>
         </div>
         <div class="form-group">
             <label>Last Name</label>
@@ -84,10 +97,16 @@ if(isset($_POST['submit'])){
             <label>Enrolled Course</label>
             <input type="text" class="form-control" name="courseEnrolled" autocomplete="off" required value=<?php echo $courseEnrolled;?>>
         </div>
-        <div class="form-group">
-            <label>Enrollment Status</label>
-            <input type="text" class="form-control" name="enrollStatus" autocomplete="off" required value=<?php echo $enrollStatus;?>>
-        </div>
+        <div class="form-check">
+                <input class="form-check-input" type="radio" name="enrollmentStatus" id="enrolled" value="enrolled" <?php if ($enrollmentStatus == "enrolled") echo "checked"; ?>>
+                <label class="form-check-label" for="enrolled">Enrolled</label>
+            </div>
+            <br>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="enrollmentStatus" id="notEnrolled" value="notEnrolled" <?php if ($enrollmentStatus == "notEnrolled") echo "checked"; ?>>
+                <label class="form-check-label" for="notEnrolled">Not Enrolled</label> 
+            </div>
+            <br>
         <button type="submit" class="btn btn-primary" name="submit">Update</button>
     </form>
     </div>

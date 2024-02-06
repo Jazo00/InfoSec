@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Login</title>
+    
 </head>
 <body>
     <div class="container">
@@ -62,6 +63,9 @@
                 </div>
                 <div class="links">
                     Not a Student? <a href="login_admin.php">Login as Admin</a>
+                </div>
+                <div class="links">
+                    <a href="index.php">Go back to home page</a>
                 </div>
             </form>
         </div>

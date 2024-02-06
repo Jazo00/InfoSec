@@ -19,7 +19,7 @@ include 'config.php';
 <body>
     <!--Header with Navigation Bar-->
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-      <h5 class="my-0 mr-md-auto font-weight-normal">Company</h5>
+      <h5 class="my-0 mr-md-auto font-weight-normal">John University Admin</h5>
       <nav class="my-2 my-md-0 mr-md-3">
         <a class="p-2 text-dark" href="#">Home</a>
         <a class="p-2 text-dark" href="#">About Us</a>
@@ -32,7 +32,7 @@ include 'config.php';
     <!--Filler for the Space-->
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
       <h1 class="display-4">Students Table</h1>
-      <p class="lead">Access the Jobs Table through this webpage.</p>
+      <p class="lead">Access the Record Table through this webpage.</p>
     </div>
 
     <!--Content of the Page-->
@@ -41,6 +41,10 @@ include 'config.php';
             Add Student
         </a>
         </button>
+        <!---<button class="btn btn-primary my-5"><a href=".php" class="text-light">
+            Enrollment status
+        </a>
+        </button>--->
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -61,13 +65,13 @@ include 'config.php';
             $result=mysqli_query($con,$sql);
             if($result){
                 while($row=mysqli_fetch_assoc($result)){
-                    $id=$row['iD'];
+                    $id=$row['id']; //changed to id base sa database ko (change nalang to base sa database na gamit mo)
                     $studentNumber=$row['studentNumber'];
                     $firstName=$row['firstName'];
                     $middleInitial=$row['middleInitial'];
                     $lastName=$row['lastName'];
                     $courseEnrolled=$row['courseEnrolled'];
-                    $enrollStatus=$row['enrollStatus'];
+                    $enrollmentStatus=$row['enrollmentStatus'];
                     echo '<tr>
                             <th scope="row">'.$id.'</th>
                             <td>'.$studentNumber.'</td>
@@ -75,7 +79,7 @@ include 'config.php';
                             <td>'.$middleInitial.'</td>
                             <td>'.$lastName.'</td>
                             <td>'.$courseEnrolled.'</td>
-                            <td>'.$enrollStatus.'</td>
+                            <td>'.$enrollmentStatus.'</td>
                             <td>
                                 <button class="btn btn-primary"><a href="edit_admin.php? updateid='.$id.'" class="text-light">Update</a></button>
                                 <button class="btn btn-danger"><a href="delete_admin.php? deleteid='.$id.'" class="text-light">Delete</a></button>

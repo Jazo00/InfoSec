@@ -15,13 +15,13 @@
 
         include("config.php");
         if(isset($_POST['submit'])){
-            $studentNumber =$_POST['studentNumber'];
+            $studentNumber = $_POST['studentNumber'];
             $firstName = $_POST['firstName'];
             $middleInitial = $_POST['middleInitial'];
             $lastName = $_POST['lastName'];
             $emailAdd = $_POST['emailAdd'];
             $courseEnrolled = $_POST['courseEnrolled'];
-            $enrollStatus = $_POST['enrollStatus'];
+            $password = $_POST['password'];
         
         //Verifying the unique email
 
@@ -35,14 +35,11 @@
         }
         else{
 
-            mysqli_query($con, "INSERT INTO users(studentNumber,firstName,middleInitial,lastName,emailAdd,courseEnrolled,enrollStatus) VALUES ('$studentNumber','$firstName','$middleInitial','$lastName','$emailAdd','$courseEnrolled','$enrollStatus')") or die("Error Occured");
-
-            echo "<div class='message'>
-                    <p>Registration Complete!</p>
-                </div> <br>";
-            echo "<a href='login.php'><button class='btn'>Login Now</button>";
+            mysqli_query($con, "INSERT INTO users(studentNumber,firstName,middleInitial,lastName,emailAdd,courseEnrolled,password) VALUES ('$studentNumber','$firstName','$middleInitial','$lastName','$emailAdd','$courseEnrolled', '$password')") or die("Error Occured");
+            header('location:home.php');
         }
-        }else{
+        }
+        else{
 
         ?>
             <header>Sign Up</header>
@@ -57,7 +54,7 @@
                 </div>
                 <div class="field input">
                     <label for="middleInitial">Middle Initial</label>
-                    <input type="text" name="middleInitial" id="middleInitial" autocomplete="off" required>
+                    <input type="text" name="middleInitial" id="middleInitial" autocomplete="off"> <!---nagtanggal ka dito required add nalang pag need--->
                 </div>
                 <div class="field input">
                     <label for="lastName">Last Name</label>
@@ -69,12 +66,18 @@
                 </div>
                 <div class="field input">
                     <label for="courseEnrolled">Enrolled Course</label>
-                    <input type="text" name="courseEnrolled" id="courseEnrolled" autocomplete="off" required>
+                    <select name="courseEnrolled" id="courseEnrolled" required> 
+                        <option value="Choices">choose enrolled course</option>
+                        <option value="BSIT">BSIT</option>
+                        <option value="BSCS">BSCS</option>
+                        <option value="BSML">BSML</option>
+                        <option value="BSBM">BSBM</option>
+                    </select>
                 </div>
-                <div class="field input"> 
-                    <label for="enrollStatus">Enrollment Status</label>
-                    <input type="text" name="enrollStatus" id="enrollStatus" autocomplete="off" required>
-                </div>    
+                <div class="field input">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" autocomplete="off" required>
+                </div>
                 <div class="field">
                     <input type="submit" name="submit" class="btn" value="Sign Up" required>
                 </div>

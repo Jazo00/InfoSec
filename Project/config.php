@@ -1,5 +1,5 @@
 <?php
 
-$con = mysqli_connect("localhost", "root", "", "login") or die("Couldn't connect");
+$con = mysqli_connect("localhost", "root", "", "admin") or die("Couldn't connect");
 
 ?>

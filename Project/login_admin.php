@@ -9,17 +9,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Admin Login</title>
+    <style>
+        form {
+            width: 100%;
+            margin: auto; 
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 5px; 
+            box-sizing: border-box; 
+            margin-bottom: 5px; 
+        }
+        input[type="submit"] {
+            width: 100%; 
+            box-sizing: border-box; 
+        }
+        .field {
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="box form-box">
             <?php
-            
+
             include("config.php");
             if(isset($_POST['submit'])){
+
                 $username = mysqli_real_escape_string($con,$_POST['username']);
                 $password = mysqli_real_escape_string($con,$_POST['password']);
-
+                
                 $result = mysqli_query($con,"SELECT * FROM admin WHERE username='$username' AND password='$password' ") or die("Select Error");
                 $row = mysqli_fetch_assoc($result);
 
@@ -52,9 +72,6 @@
                 </div>
                 <div class="field">
                     <input type="submit" name="submit" class="btn" value="Login" required>
-                </div>
-                <div class="links">
-                    <a href="login.php">Login as Student</a>
                 </div>
             </form>
         </div>

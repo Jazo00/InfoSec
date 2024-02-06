@@ -17,15 +17,15 @@
 <body>
     <div class="nav">
         <div class="logo">
-            <p>Logo</p>
+        <a href="index.php">Logo</button></a>
         </div>
 
         <div class="right-links">
-
+        <a href="index.php">Home</button></a>
         <?php
 
         $id = $_SESSION['id'];
-        $query = mysqli_query($con,"SELECT * FROM users WHERE iD=$id");
+        $query = mysqli_query($con,"SELECT * FROM users WHERE iD=$id"); 
 
         while($result = mysqli_fetch_assoc($query)){
             $res_studentNumber = $result['studentNumber'];
@@ -33,7 +33,7 @@
             $res_middleInitial = $result['middleInitial'];
             $res_lastName = $result['lastName'];
             $res_courseEnrolled = $result['courseEnrolled'];
-            $res_statusEnrolled = $result['enrollStatus'];
+      
         }
 
         echo "<a href='edit.php?studentNumber=$res_studentNumber'>Change Profile</a>";
@@ -55,11 +55,11 @@
             </div>
             <div class="bottom">
                 <div class="box">
-                    <p>And your course is <b><?php echo $res_courseEnrolled; ?></b>.</p>
+                    <p>And you are enrolled in <b><?php echo $res_courseEnrolled; ?></b>.</p>
                 </div>
-                <div class="box">
-                    <p>And you are <b><?php echo $res_statusEnrolled; ?></b>.</p>
-                </div>
+                <!---<div class="box">
+                    <p>And you are <b></b>.</p>
+                </div>-->
             </div>
         </div>
 
