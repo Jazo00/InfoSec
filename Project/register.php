@@ -36,7 +36,7 @@
         else{
 
             mysqli_query($con, "INSERT INTO users(studentNumber,firstName,middleInitial,lastName,emailAdd,courseEnrolled,password) VALUES ('$studentNumber','$firstName','$middleInitial','$lastName','$emailAdd','$courseEnrolled', '$password')") or die("Error Occured");
-            header('location:home.php');
+            header('location:index.php');
         }
         }
         else{
