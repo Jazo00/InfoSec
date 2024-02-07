@@ -41,10 +41,6 @@ include 'config.php';
             Add Student
         </a>
         </button>
-        <!---<button class="btn btn-primary my-5"><a href=".php" class="text-light">
-            Enrollment status
-        </a>
-        </button>--->
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -54,7 +50,6 @@ include 'config.php';
                     <th scope="col">Middle Initial</th>
                     <th scope="col">Last Name</th>
                     <th scope="col">Enrolled Course</th>
-                    <th scope="col">Enrollment Status</th>
                     <th scope="col">Operations</th>
 
                 </tr>
@@ -71,7 +66,6 @@ include 'config.php';
                     $middleInitial=$row['middleInitial'];
                     $lastName=$row['lastName'];
                     $courseEnrolled=$row['courseEnrolled'];
-                    $enrollmentStatus=$row['enrollmentStatus'];
                     echo '<tr>
                             <th scope="row">'.$id.'</th>
                             <td>'.$studentNumber.'</td>
@@ -79,7 +73,6 @@ include 'config.php';
                             <td>'.$middleInitial.'</td>
                             <td>'.$lastName.'</td>
                             <td>'.$courseEnrolled.'</td>
-                            <td>'.$enrollmentStatus.'</td>
                             <td>
                                 <button class="btn btn-primary"><a href="edit_admin.php? updateid='.$id.'" class="text-light">Update</a></button>
                                 <button class="btn btn-danger"><a href="delete_admin.php? deleteid='.$id.'" class="text-light">Delete</a></button>

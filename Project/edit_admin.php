@@ -11,7 +11,6 @@ $middleInitial=$row['middleInitial'];
 $lastName=$row['lastName'];
 $emailAdd=$row['emailAdd'];
 $courseEnrolled=$row['courseEnrolled'];
-$enrollmentStatus=$row['enrollmentStatus'];
 
 if(isset($_POST['submit'])){
   $studentNumber = $_POST['studentNumber'];
@@ -20,15 +19,14 @@ if(isset($_POST['submit'])){
   $lastName = $_POST['lastName'];
   $emailAdd = $_POST['emailAdd'];
   $courseEnrolled = $_POST['courseEnrolled'];
-  $enrollmentStatus=$_POST['enrollmentStatus'];
 
   //to prevent SQL injection
-  $sql = "UPDATE users SET studentNumber=$studentNumber, firstName=$firstName, middleInitial=$middleInitial, lastName=$lastName, emailAdd=$emailAdd, courseEnrolled=$courseEnrolled, enrollmentStatus=$enrollmentStatus WHERE iD=$id";
+  $sql = "UPDATE users SET studentNumber=?, firstName=?, middleInitial=?, lastName=?, emailAdd=?, courseEnrolled=? WHERE iD=?";
   $statement = mysqli_prepare($con, $sql);
   
   // Assuming $con is your mysqli connection object
   
-  mysqli_stmt_bind_param($statement, "sssssssi", $studentNumber, $firstName, $middleInitial, $lastName, $emailAdd, $courseEnrolled, $enrollmentStatus, $id);
+  mysqli_stmt_bind_param($statement, "ssssssi", $studentNumber, $firstName, $middleInitial, $lastName, $emailAdd, $courseEnrolled, $id);
   $result = mysqli_stmt_execute($statement);
   
   if ($result) {
@@ -97,16 +95,6 @@ if(isset($_POST['submit'])){
             <label>Enrolled Course</label>
             <input type="text" class="form-control" name="courseEnrolled" autocomplete="off" required value=<?php echo $courseEnrolled;?>>
         </div>
-        <div class="form-check">
-                <input class="form-check-input" type="radio" name="enrollmentStatus" id="enrolled" value="enrolled" <?php if ($enrollmentStatus == "enrolled") echo "checked"; ?>>
-                <label class="form-check-label" for="enrolled">Enrolled</label>
-            </div>
-            <br>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="enrollmentStatus" id="notEnrolled" value="notEnrolled" <?php if ($enrollmentStatus == "notEnrolled") echo "checked"; ?>>
-                <label class="form-check-label" for="notEnrolled">Not Enrolled</label> 
-            </div>
-            <br>
         <button type="submit" class="btn btn-primary" name="submit">Update</button>
     </form>
     </div>

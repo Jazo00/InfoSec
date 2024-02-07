@@ -1,9 +1,5 @@
 <?php
     session_start();
-    include("config.php");
-    if(isset($_SESSION['valid'])){
-        header("Location: index.php");
-    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,17 +15,13 @@
     <div class="container">
         <div class="box form-box">
             <?php
-
-            if(isset($_SESSION['valid'])){
-                header("Location: index.php");
-            }
             
             include("config.php");
             if(isset($_POST['submit'])){
                 $email = mysqli_real_escape_string($con,$_POST['emailAdd']);
-                $password = mysqli_real_escape_string($con,$_POST['password']);
+                $studentNum = mysqli_real_escape_string($con,$_POST['studentNumber']);
 
-                $result = mysqli_query($con,"SELECT * FROM users WHERE emailAdd='$email' AND password='$password' ") or die("Select Error");
+                $result = mysqli_query($con,"SELECT * FROM users WHERE emailAdd='$email' AND studentNumber='$studentNum' ") or die("Select Error");
                 $row = mysqli_fetch_assoc($result);
 
                 if(is_array($row) && !empty($row)){
@@ -38,16 +30,20 @@
                     $_SESSION['middleInitial'] = $row['middleInitial'];
                     $_SESSION['lastName'] = $row['lastName'];
                     $_SESSION['courseEnrolled'] = $row['courseEnrolled'];
-                    $_SESSION['password'] = $row['password'];
-                    $_SESSION['id'] = $row['id'];
+                    $_SESSION['enrollStatus'] = $row['enrollStatus'];
+                    $_SESSION['id'] = $row['iD'];
                 }else{
                     echo "<div class='message'>
                             <p>Wrong Username or Password. Please try again!</p>
                         </div> <br>";
                     echo "<a href='login.php'><button class='btn'>Go Back</button>";
                 }
-                
-            } 
+                if(isset($_SESSION['valid'])){
+                    header("Location: home.php");
+                }
+            } else{
+
+
             ?>
             <header>Login</header>
             <form action="" method="post">
@@ -56,8 +52,8 @@
                     <input type="text" name="emailAdd" id="emailAdd" autocomplete="off" required>
                 </div>
                 <div class="field input">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" autocomplete="off" required>
+                    <label for="password">Student Number</label>
+                    <input type="password" name="studentNumber" id="studentNumber" autocomplete="off" required>
                 </div>
                 <div class="field">
                     <input type="submit" name="submit" class="btn" value="Login" required>
@@ -73,6 +69,7 @@
                 </div>
             </form>
         </div>
+        <?php } ?>
     </div>
 </body>
 </html>

@@ -1,6 +1,3 @@
-<?php
-    session_start();
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,14 +15,8 @@
                 <ul>
                     <li><a href="">HOME</a></li>
                     <li><a href="#about-us">ABOUT</a></li>
-
-                    <?php if(!isset($_SESSION['valid'])){ ?>
-                        <li><a href="login.php">LOGIN</a></li>
-                        <li><a href="register.php">SIGN UP</a></li>
-                    <?php } else { ?>
-                        <li><a href="profile.php">PROFILE</a></li>
-                        <li><a href="logout.php">LOGOUT</a></li>
-                    <?php } ?>
+                    <li><a href="login.php">LOGIN</a></li>
+                    <li><a href="register.php">SIGN UP</a></li>
                 </ul>
             </div>
             <i class="fa fa-bars" onclick="showMenu()"></i>
