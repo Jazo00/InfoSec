@@ -40,13 +40,18 @@
                 $username = mysqli_real_escape_string($con,$_POST['username']);
                 $password = mysqli_real_escape_string($con,$_POST['password']);
                 
+                //hash password
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
                 $result = mysqli_query($con,"SELECT * FROM admin WHERE username='$username' AND password='$password' ") or die("Select Error");
                 $row = mysqli_fetch_assoc($result);
 
-                if(is_array($row) && !empty($row)){
+                //validation of username and password
+                if(is_array($row) && !empty($row) && password_verify($password, $row['password'])){
                     $_SESSION['valid'] = $row['username'];
-                    $_SESSION['password'] = $row['password'];
                     $_SESSION['id'] = $row['iD'];
+                    header("Location: admin.php");
+                    exit;
                 }else{
                     echo "<div class='message'>
                             <p>Wrong Username or Password. Please try again!</p>

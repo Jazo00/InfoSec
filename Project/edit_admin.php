@@ -11,6 +11,7 @@ $middleInitial=$row['middleInitial'];
 $lastName=$row['lastName'];
 $emailAdd=$row['emailAdd'];
 $courseEnrolled=$row['courseEnrolled'];
+$password=$row['password'];
 
 if(isset($_POST['submit'])){
   $studentNumber = $_POST['studentNumber'];
@@ -19,23 +20,17 @@ if(isset($_POST['submit'])){
   $lastName = $_POST['lastName'];
   $emailAdd = $_POST['emailAdd'];
   $courseEnrolled = $_POST['courseEnrolled'];
+  $password=$_POST['password'];
 
   //to prevent SQL injection
-  $sql = "UPDATE users SET studentNumber=?, firstName=?, middleInitial=?, lastName=?, emailAdd=?, courseEnrolled=? WHERE iD=?";
-  $statement = mysqli_prepare($con, $sql);
+ 
+  $edit_query = mysqli_query($con,"UPDATE users SET studentNumber='$studentNumber', firstName='$firstName', middleInitial='$middleInitial', lastName='$lastName', emailAdd='$emailAdd', courseEnrolled='$courseEnrolled', password='$password' WHERE Id=$id ") or die("Error Occured");
   
-  // Assuming $con is your mysqli connection object
-  
-  mysqli_stmt_bind_param($statement, "ssssssi", $studentNumber, $firstName, $middleInitial, $lastName, $emailAdd, $courseEnrolled, $id);
-  $result = mysqli_stmt_execute($statement);
-  
-  if ($result) {
+  if ($edit_query) {
       header('location:admin.php');
   } else {
       die(mysqli_error($con));
   }
-  
-  mysqli_stmt_close($statement);
 } 
 ?>
 
@@ -92,8 +87,18 @@ if(isset($_POST['submit'])){
             <input type="text" class="form-control" name="emailAdd" autocomplete="off" required value=<?php echo $emailAdd;?>>
         </div>
         <div class="form-group">
-            <label>Enrolled Course</label>
-            <input type="text" class="form-control" name="courseEnrolled" autocomplete="off" required value=<?php echo $courseEnrolled;?>>
+                    <label for="courseEnrolled">Enrolled Course</label>
+                    <select name="courseEnrolled" id="courseEnrolled" required> 
+                        <option value="Choices">choose enrolled course</option>
+                        <option value="BSIT">BSIT</option>
+                        <option value="BSCS">BSCS</option>
+                        <option value="BSML">BSML</option>
+                        <option value="BSBM">BSBM</option>
+                    </select>
+                </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="text" class="form-control" name="password" autocomplete="off" required value=<?php echo $password;?>>
         </div>
         <button type="submit" class="btn btn-primary" name="submit">Update</button>
     </form>

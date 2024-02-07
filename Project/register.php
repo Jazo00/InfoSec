@@ -21,7 +21,7 @@
             $lastName = $_POST['lastName'];
             $emailAdd = $_POST['emailAdd'];
             $courseEnrolled = $_POST['courseEnrolled'];
-            //$enrollStatus = $_POST['enrollStatus'];
+            $password = $_POST['password'];
         
         //Verifying the unique email
 
@@ -35,8 +35,8 @@
         }
         else{
 
-            mysqli_query($con, "INSERT INTO users(studentNumber,firstName,middleInitial,lastName,emailAdd,courseEnrolled) VALUES ('$studentNumber','$firstName','$middleInitial','$lastName','$emailAdd','$courseEnrolled')") or die("Error Occured");
-
+            mysqli_query($con, "INSERT INTO users(studentNumber,firstName,middleInitial,lastName,emailAdd,courseEnrolled,password) VALUES ('$studentNumber','$firstName','$middleInitial','$lastName','$emailAdd','$courseEnrolled', '$password')") or die("Error Occured");
+            header('location:index.php');
         }
         }
         else{
@@ -69,15 +69,15 @@
                     <select name="courseEnrolled" id="courseEnrolled" required> 
                         <option value="Choices">choose enrolled course</option>
                         <option value="BSIT">BSIT</option>
-                        <option value="Course2">BSCS</option>
-                        <option value="Course3">BSML</option>
-                        <option value="Course4">BSBM</option>
+                        <option value="BSCS">BSCS</option>
+                        <option value="BSML">BSML</option>
+                        <option value="BSBM">BSBM</option>
                     </select>
                 </div>
-                <!--<div class="field input"> 
-                    <label for="enrollStatus">Enrollment Status</label>
-                    <input type="text" name="enrollStatus" id="enrollStatus" autocomplete="off" required>
-                </div>    -->
+                <div class="field input">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" autocomplete="off" required>
+                </div>
                 <div class="field">
                     <input type="submit" name="submit" class="btn" value="Sign Up" required>
                 </div>

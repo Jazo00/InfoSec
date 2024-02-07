@@ -18,7 +18,7 @@
 <body>
     <div class="nav">
         <div class="logo">
-            <p> <a href="home.php">Logo</a></p>
+            <p> <a href="index.php">Logo</a></p>
         </div>
 
         <div class="right-links">
@@ -46,7 +46,7 @@
                         echo "<div class='message'>
                                 <p>Your Profile is Up to date!</p>
                             </div> <br>";
-                        echo "<a href='home.php'><button class='btn'>Go Home</button>";
+                        echo "<a href='index.php'><button class='btn'>Go Home</button>";
                         }
                 } else{
                     $id = $_SESSION['id'];
@@ -82,14 +82,16 @@
                     <label for="emailAdd">Email Address</label>
                     <input type="email" name="emailAdd" id="emailAdd" autocomplete="off" required>
                 </div>
-                <div class="field input">
+                <div class="form-group">
                     <label for="courseEnrolled">Enrolled Course</label>
-                    <input type="text" name="courseEnrolled" id="courseEnrolled" autocomplete="off" required>
+                    <select name="courseEnrolled" id="courseEnrolled" required> 
+                        <option value="Choices">choose enrolled course</option>
+                        <option value="BSIT">BSIT</option>
+                        <option value="BSCS">BSCS</option>
+                        <option value="BSML">BSML</option>
+                        <option value="BSBM">BSBM</option>
+                    </select>
                 </div>
-                <!--<div class="field input"> 
-                    <label for="enrollStatus">Enrollment Status</label>
-                    <input type="text" name="enrollStatus" id="enrollStatus" autocomplete="off" required>
-                </div>-->
                 <div class="field">
                     <input type="submit" name="submit" class="btn" value="Update" required>
                 </div>
