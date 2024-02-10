@@ -2,16 +2,23 @@
 include 'config.php';
 
 $id=$_GET['updateid'];
-$sql="Select * from users where id=$id";
-$result=mysqli_query($con,$sql);
+$sql="SELECT 
+        s.*, 
+        c.id as course_id
+      FROM tbl_students s
+      LEFT JOIN tbl_courses c ON s.course_id = c.id
+      WHERE s.id=$id";
+
+$result=mysqli_query($conn,$sql);
 $row=mysqli_fetch_assoc($result);
-$studentNumber=$row['studentNumber'];
-$firstName=$row['firstName'];
-$middleInitial=$row['middleInitial'];
-$lastName=$row['lastName'];
-$emailAdd=$row['emailAdd'];
-$courseEnrolled=$row['courseEnrolled'];
-$password=$row['password'];
+
+$studentNumber=$row['student_number'];
+$firstName=$row['student_firstname'];
+$middleInitial=$row['student_mi'];
+$lastName=$row['student_lastname'];
+$emailAdd=$row['student_email'];
+$courseEnrolled=$row['course_id'];
+$studentStatus=$row['student_status'];
 
 if(isset($_POST['submit'])){
   $studentNumber = $_POST['studentNumber'];
@@ -19,12 +26,21 @@ if(isset($_POST['submit'])){
   $middleInitial = $_POST['middleInitial'];
   $lastName = $_POST['lastName'];
   $emailAdd = $_POST['emailAdd'];
-  $courseEnrolled = $_POST['courseEnrolled'];
-  $password=$_POST['password'];
+  $courseEnrolled = intval($_POST['courseEnrolled']);
+  $studentStatus = intval($_POST['studentStatus']);
 
   //to prevent SQL injection
  
-  $edit_query = mysqli_query($con,"UPDATE users SET studentNumber='$studentNumber', firstName='$firstName', middleInitial='$middleInitial', lastName='$lastName', emailAdd='$emailAdd', courseEnrolled='$courseEnrolled', password='$password' WHERE Id=$id ") or die("Error Occured");
+  $edit_query = mysqli_query($conn,"UPDATE tbl_students 
+                                      SET 
+                                        student_number='$studentNumber', 
+                                        student_firstname='$firstName', 
+                                        student_mi='$middleInitial', 
+                                        student_lastname='$lastName', 
+                                        student_email='$emailAdd', 
+                                        course_id=$courseEnrolled,
+                                        student_status=$studentStatus
+                                    WHERE id=$id");
   
   if ($edit_query) {
       header('location:admin.php');
@@ -63,6 +79,12 @@ if(isset($_POST['submit'])){
       <a class="btn btn-outline-primary" href="logout.php">Log Out</a>
     </div>
 
+    <!--Filler for the Space-->
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+      <h1 class="display-4">Student Profile</h1>
+      <p class="lead">This is the student detail information.</p>
+    </div>
+
     <!--Content of the Page-->
     <div class="container my-5">
     <form action="" method="POST">
@@ -87,25 +109,31 @@ if(isset($_POST['submit'])){
             <input type="text" class="form-control" name="emailAdd" autocomplete="off" required value=<?php echo $emailAdd;?>>
         </div>
         <div class="form-group">
-                    <label for="courseEnrolled">Enrolled Course</label>
-                    <select name="courseEnrolled" id="courseEnrolled" required> 
-                        <option value="Choices">choose enrolled course</option>
-                        <option value="BSIT">BSIT</option>
-                        <option value="BSCS">BSCS</option>
-                        <option value="BSML">BSML</option>
-                        <option value="BSBM">BSBM</option>
-                    </select>
-                </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input type="text" class="form-control" name="password" autocomplete="off" required value=<?php echo $password;?>>
+            <label for="courseEnrolled">Course Enrolled</label>
+            <select class="form-control" name="courseEnrolled" id="courseEnrolled" required> 
+                <option value="">choose enrolled course</option>
+                <option value=1 <?php echo ($courseEnrolled == 1 ? 'selected="selected"' : '') ?>>BSIT</option>
+                <option value=2 <?php echo ($courseEnrolled == 2 ? 'selected="selected"' : '') ?>>BSCS</option>
+                <option value=3 <?php echo ($courseEnrolled == 3 ? 'selected="selected"' : '') ?>>BSML</option>
+                <option value=4 <?php echo ($courseEnrolled == 4 ? 'selected="selected"' : '') ?>>BSBM</option>
+            </select>
         </div>
-        <button type="submit" class="btn btn-primary" name="submit">Update</button>
+        <div class="form-group">
+            <label for="studentStatus">Status</label>
+            <select class="form-control" name="studentStatus" id="studentStatus" required> 
+                <option value=0 <?php echo ($studentStatus == 0 ? 'selected="selected"' : '') ?>>INACTIVE</option>
+                <option value=1 <?php echo ($studentStatus == 1 ? 'selected="selected"' : '') ?>>ACTIVE</option>
+            </select>
+        </div>
+        <div class="form-group float-right">
+          <button type="submit" class="btn btn-warning" name="submit">Update</button>
+          <a href="admin.php" class="btn btn-primary">Back</a>
+        </div>
     </form>
-    </div>
+    </div><br/>
 
     <!--Footer of the Page-->
-    <footer class="pt-4 my-md-5 pt-md-5 border-top">
+    <footer class="mt-30 pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
           <div class="col-12 col-md">
           </div>

@@ -1,5 +1,9 @@
 <?php
-include 'config.php';
+    session_start();
+    include("config.php");
+    if(!isset($_SESSION['isAdmin'])){
+        header("Location: index.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -14,6 +18,26 @@ include 'config.php';
 
     <!--Manually-made CSS-->
     <link rel="stylesheet" href="admin.css">
+
+    <script>
+        function confirmDelete(studentNumber, firstName) {
+            return confirm("Are you sure you want to delete student with number " + studentNumber + " and name " + firstName + "?");
+        }
+
+        function cancelDelete() {
+            window.location.href = "admin.php"; // Redirect to admin.php if cancel is clicked
+        }
+
+        function handleDelete(studentId, studentNumber, firstName) {
+            if(confirmDelete(studentNumber, firstName)) {
+                // Proceed with deletion
+                window.location.href = "delete_admin.php?deleteid=" + studentId;
+            } else {
+                // Cancel deletion
+                cancelDelete();
+            }
+        }
+    </script>
 
 </head>
 <body>
@@ -31,7 +55,7 @@ include 'config.php';
 
     <!--Filler for the Space-->
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-      <h1 class="display-4">Students Table</h1>
+      <h1 class="display-4">Student Enrollment</h1>
       <p class="lead">Access the Record Table through this webpage.</p>
     </div>
 
@@ -50,34 +74,45 @@ include 'config.php';
                     <th scope="col">Middle Initial</th>
                     <th scope="col">Last Name</th>
                     <th scope="col">Enrolled Course</th>
-                    <th scope="col">Operations</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
 
                 </tr>
             </thead>
         <tbody>
             <?php
-            $sql="SELECT * FROM users";
-            $result=mysqli_query($con,$sql);
+            $sql="SELECT 
+                      s.*, 
+                      c.course_name
+                  FROM tbl_students s
+                  LEFT JOIN tbl_courses c ON s.course_id = c.id
+                  WHERE s.deleted_at IS NULL";
+
+            $result=mysqli_query($conn, $sql);
             if($result){
                 while($row=mysqli_fetch_assoc($result)){
                     $id=$row['id']; //changed to id base sa database ko (change nalang to base sa database na gamit mo)
-                    $studentNumber=$row['studentNumber'];
-                    $firstName=$row['firstName'];
-                    $middleInitial=$row['middleInitial'];
-                    $lastName=$row['lastName'];
-                    $courseEnrolled=$row['courseEnrolled'];
-                    echo '<tr>
-                            <th scope="row">'.$id.'</th>
-                            <td>'.$studentNumber.'</td>
-                            <td>'.$firstName.'</td>
-                            <td>'.$middleInitial.'</td>
-                            <td>'.$lastName.'</td>
-                            <td>'.$courseEnrolled.'</td>
+                    $studentNumber=$row['student_number'];
+                    $firstName=$row['student_firstname'];
+                    $middleInitial=$row['student_mi'];
+                    $lastName=$row['student_lastname'];
+                    $fullName=$firstName.' '.$lastName;
+                    $courseEnrolled=$row['course_name'];
+                    $studentStatus=$row['student_status'];
+
+                    echo "<tr>
+                            <th scope='row'>$id</th>
+                            <td><strong>$studentNumber</strong></td>
+                            <td>$firstName</td>
+                            <td>$middleInitial</td>
+                            <td>$lastName</td>
+                            <td>$courseEnrolled</td>
+                            <td>".($studentStatus > 0 ? 'ACTIVE' : 'INACTIVE')."</td>
                             <td>
-                                <button class="btn btn-primary"><a href="edit_admin.php? updateid='.$id.'" class="text-light">Update</a></button>
-                                <button class="btn btn-danger"><a href="delete_admin.php? deleteid='.$id.'" class="text-light">Delete</a></button>
+                                <button class='btn btn-primary'><a href='edit_admin.php?updateid=$id' class='text-light'>Update</a></button>
+                                <button class='btn btn-danger' onclick='handleDelete(".$id.",".$studentNumber.",\"".$fullName."\")' ".($studentStatus==1?'disabled':'').">Delete</button>
                             </td>
-                        </tr>';
+                        </tr>";
                 }
             }
             ?>
@@ -121,6 +156,7 @@ include 'config.php';
           </div>
         </div>
       </footer>
+
 
 </body>
 </html>
