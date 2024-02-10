@@ -23,21 +23,41 @@
             $courseEnrolled = $_POST['courseEnrolled'];
             $password = $_POST['password'];
         
-        //Verifying the unique email
+            //Verifying the unique email
 
-        $verify_query = mysqli_query($con, "SELECT studentNumber FROM users WHERE studentNumber='$studentNumber'");
+            $sql = "SELECT student_number FROM tbl_students WHERE student_number=?";
+            $student = $conn->execute_query($sql, [$studentNumber])->fetch_assoc();
 
-        if(mysqli_num_rows($verify_query) !=0){
-            echo "<div class='message'>
-                    <p>This Student Number is already taken, Try another one please!</p>
-                </div> <br>";
-            echo "<a href='javascript:self.history.back()'><button class='btn'>Go Back</button>";
-        }
-        else{
+            if($student){
+                echo "<div class='message'>
+                        <p>Student Number is already taken, please try again.</p>
+                    </div> <br>";
+                echo "<a href='javascript:self.history.back()'><button class='btn'>Go Back</button>";
+            }
+            else{
 
-            mysqli_query($con, "INSERT INTO users(studentNumber,firstName,middleInitial,lastName,emailAdd,courseEnrolled,password) VALUES ('$studentNumber','$firstName','$middleInitial','$lastName','$emailAdd','$courseEnrolled', '$password')") or die("Error Occured");
-            header('location:index.php');
-        }
+                try { 
+                    $userSql = "INSERT INTO tbl_users (name, user_email, password) VALUES (?,?,?)";
+                    $user = $conn->execute_query($userSql, [$firstName.' '.$lastName, $emailAdd, SHA1($password)]);
+
+                    if($user) {
+                        $studeSql = "INSERT INTO tbl_students(user_id, student_number, student_firstname, student_mi, student_lastName, student_email, course_id) 
+                                        VALUES (?,?,?,?,?,?,?)";
+                        $student = $conn->execute_query($studeSql, [$conn->insert_id, $studentNumber, strval($firstName), $middleInitial, strval($lastName), $emailAdd, $courseEnrolled]);
+
+                        header('location:index.php');
+                    }
+
+                } 
+                
+                catch(Exception $e) {
+                    echo "<div class='message'>
+                            <p>Email address is already taken, please try again.</p>
+                        </div> <br>";
+                    echo "<a href='javascript:self.history.back()'><button class='btn'>Go Back</button>";
+                }
+                
+            }
         }
         else{
 
@@ -54,7 +74,7 @@
                 </div>
                 <div class="field input">
                     <label for="middleInitial">Middle Initial</label>
-                    <input type="text" name="middleInitial" id="middleInitial" autocomplete="off"> <!---nagtanggal ka dito required add nalang pag need--->
+                    <input type="text" name="middleInitial" id="middleInitial" autocomplete="off" required> <!---nagtanggal ka dito required add nalang pag need--->
                 </div>
                 <div class="field input">
                     <label for="lastName">Last Name</label>
@@ -67,11 +87,11 @@
                 <div class="field input">
                     <label for="courseEnrolled">Enrolled Course</label>
                     <select name="courseEnrolled" id="courseEnrolled" required> 
-                        <option value="Choices">choose enrolled course</option>
-                        <option value="BSIT">BSIT</option>
-                        <option value="BSCS">BSCS</option>
-                        <option value="BSML">BSML</option>
-                        <option value="BSBM">BSBM</option>
+                        <option value="">choose enrolled course</option>
+                        <option value=1>BSIT</option>
+                        <option value=2>BSCS</option>
+                        <option value=3>BSML</option>
+                        <option value=4>BSBM</option>
                     </select>
                 </div>
                 <div class="field input">

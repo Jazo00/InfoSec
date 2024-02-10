@@ -21,9 +21,13 @@
 
                     <?php if(!isset($_SESSION['valid'])){ ?>
                         <li><a href="login.php">LOGIN</a></li>
-                        <li><a href="register.php">SIGN UP</a></li>
+                        <li><a href="register.php">REGISTER</a></li>
                     <?php } else { ?>
+                        <?php if(!isset($_SESSION['isAdmin'])){ ?>
                         <li><a href="profile.php">PROFILE</a></li>
+                        <?php } else { ?>
+                        <li><a href="admin.php">ADMIN</a></li>
+                        <?php } ?>
                         <li><a href="logout.php">LOGOUT</a></li>
                     <?php } ?>
                 </ul>

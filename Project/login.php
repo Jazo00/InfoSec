@@ -26,25 +26,53 @@
             
             include("config.php");
             if(isset($_POST['submit'])){
-                $email = mysqli_real_escape_string($con,$_POST['emailAdd']);
-                $password = mysqli_real_escape_string($con,$_POST['password']);
+                $email = mysqli_real_escape_string($conn,$_POST['emailAdd']);
+                $password = mysqli_real_escape_string($conn,$_POST['password']);
 
-                $result = mysqli_query($con,"SELECT * FROM users WHERE emailAdd='$email' AND password='$password' ") or die("Select Error");
-                $row = mysqli_fetch_assoc($result);
+                $hash_password = SHA1($password);
 
-                if(is_array($row) && !empty($row)){
-                    $_SESSION['valid'] = $row['emailAdd'];
-                    $_SESSION['firstName'] = $row['firstName'];
-                    $_SESSION['middleInitial'] = $row['middleInitial'];
-                    $_SESSION['lastName'] = $row['lastName'];
-                    $_SESSION['courseEnrolled'] = $row['courseEnrolled'];
-                    $_SESSION['password'] = $row['password'];
-                    $_SESSION['id'] = $row['id'];
+                $userResult = mysqli_query($conn,"SELECT id, user_email, user_type
+                                              FROM tbl_users u
+                                                WHERE u.user_email='$email' 
+                                                    AND u.password='$hash_password'
+                                                    AND u.deleted_at IS NULL");
+
+                $userRow = mysqli_fetch_assoc($userResult);
+
+                if(is_array($userRow) && !empty($userRow)){
+
+                    if($userRow['user_type'] == 1) {
+                        $_SESSION['isAdmin'] = $userRow['user_email'];
+                        header('location:admin.php');
+                    }
+
+                    $studentResult = mysqli_query($conn,"SELECT 
+                                                students.*,
+                                                courses.course_name
+                                            FROM tbl_students students
+                                            LEFT JOIN tbl_courses courses ON students.course_id = courses.id 
+                                            WHERE students.user_id=".$userRow['id']." AND students.student_status=1 AND students.deleted_at IS NULL");
+                    
+                    $studentRow = mysqli_fetch_assoc($studentResult);
+
+                     if(is_array($studentRow) && !empty($studentRow)){
+                        $_SESSION['valid'] = $userRow['user_email'];
+                        $_SESSION['firstName'] = $studentRow['student_firstname'];
+                        $_SESSION['middleInitial'] = $studentRow['student_mi'];
+                        $_SESSION['lastName'] = $studentRow['student_lastname'];
+                        $_SESSION['courseEnrolled'] = $studentRow['course_name'];
+                        $_SESSION['id'] = $studentRow['id'];
+
+                        header('location:index.php');
+                    } else {
+                        echo "<div class='message'>
+                            <p>Account Not Activated. Please again later.</p>
+                        </div>";
+                    }
                 }else{
                     echo "<div class='message'>
-                            <p>Wrong Username or Password. Please try again!</p>
-                        </div> <br>";
-                    echo "<a href='login.php'><button class='btn'>Go Back</button>";
+                            <p>Incorrect Username or Password. Please try again.</p>
+                        </div>";
                 }
                 
             } 
@@ -63,10 +91,7 @@
                     <input type="submit" name="submit" class="btn" value="Login" required>
                 </div>
                 <div class="links">
-                    Don't have an account yet? <a href="register.php">Sign Up Now</a>
-                </div>
-                <div class="links">
-                    Not a Student? <a href="login_admin.php">Login as Admin</a>
+                    Don't have an account yet? <a href="register.php">Register Now</a>
                 </div>
                 <div class="links">
                     <a href="index.php">Go back to home page</a>

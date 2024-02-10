@@ -24,14 +24,19 @@
 
         include("config.php");
         $id = $_SESSION['id'];
-        $query = mysqli_query($con,"SELECT * FROM users WHERE id=$id"); 
+        $query = mysqli_query($conn,"SELECT 
+                                        s.*, 
+                                        c.course_name
+                                    FROM tbl_students s
+                                    LEFT JOIN tbl_courses c ON s.course_id = c.id
+                                    WHERE s.id=$id"); 
 
         while($result = mysqli_fetch_assoc($query)){
-            $res_studentNumber = $result['studentNumber'];
-            $res_firstName = $result['firstName'];
-            $res_middleInitial = $result['middleInitial'];
-            $res_lastName = $result['lastName'];
-            $res_courseEnrolled = $result['courseEnrolled'];
+            $res_studentNumber = $result['student_number'];
+            $res_firstName = $result['student_firstname'];
+            $res_middleInitial = $result['student_mi'];
+            $res_lastName = $result['student_lastname'];
+            $res_courseEnrolled = $result['course_name'];
       
         }
 
@@ -46,7 +51,7 @@
         <div class="main-box top">
             <div class="top">
                 <div class="box">
-                    <p>Hello<b><?php $res_lastName;?></b>, <b><?php echo $res_firstName; ?></b> <b><?php echo $res_middleInitial; ?></b>  Welcome</p>
+                    <p>Hello <b><?php echo $res_lastName;?></b>, <b><?php echo $res_firstName; ?></b> <b><?php echo $res_middleInitial; ?></b>  Welcome</p>
                 </div>
                 <div class="box">
                     <p>Your Student Number is <b><?php echo $res_studentNumber; ?>.</p>
