@@ -13,7 +13,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Login</title>
-    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container">
@@ -91,10 +92,7 @@
                     <input type="submit" name="submit" class="btn" value="Login" required>
                 </div>
                 <div class="links">
-                    Don't have an account yet? <a href="register.php">Register Now</a>
-                </div>
-                <div class="links">
-                    <a href="index.php">Go back to home page</a>
+                    Don't have an account yet? <a href="register.php">Register Now</a> | Go back to <a href="index.php">home page</a>
                 </div>
             </form>
         </div>
