@@ -38,7 +38,6 @@
                     $firstName = $_POST['firstName'];
                     $middleInitial = $_POST['middleInitial'];
                     $lastName = $_POST['lastName'];
-                    $emailAdd = $_POST['emailAdd'];
                     $courseEnrolled = $_POST['courseEnrolled'];
                     
 
@@ -49,7 +48,6 @@
                                                         student_firstname='$firstName', 
                                                         student_mi='$middleInitial', 
                                                         student_lastname='$lastName', 
-                                                        student_email='$emailAdd', 
                                                         course_id='$courseEnrolled' 
                                                     WHERE id=$id") or die("Error Occured");
                     
