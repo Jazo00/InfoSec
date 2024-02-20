@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Register</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container">
@@ -62,31 +64,31 @@
         else{
 
         ?>
-            <header>Sign Up</header>
+            <header>Register</header>
             <form action="" method="post">
-                <div class="field input"> 
+                <div class="form-group"> 
                     <label for="studentNumber">Student Number</label>
-                    <input type="text" name="studentNumber" id="studentNumber" autocomplete="off" required>
+                    <input class="form-control" type="text" name="studentNumber" id="studentNumber" autocomplete="off" required>
                 </div>   
-                <div class="field input">
+                <div class="form-group">
                     <label for="firstName">First Name</label>
-                    <input type="text" name="firstName" id="firstName" autocomplete="off" required>
+                    <input class="form-control" type="text" name="firstName" id="firstName" autocomplete="off" required>
                 </div>
-                <div class="field input">
+                <div class="form-group">
                     <label for="middleInitial">Middle Initial</label>
-                    <input type="text" name="middleInitial" id="middleInitial" autocomplete="off" required> <!---nagtanggal ka dito required add nalang pag need--->
+                    <input class="form-control" type="text" name="middleInitial" id="middleInitial" autocomplete="off" required> <!---nagtanggal ka dito required add nalang pag need--->
                 </div>
-                <div class="field input">
+                <div class="form-group">
                     <label for="lastName">Last Name</label>
-                    <input type="text" name="lastName" id="lastName" autocomplete="off" required>
+                    <input class="form-control" type="text" name="lastName" id="lastName" autocomplete="off" required>
                 </div>
-                <div class="field input">
+                <div class="form-group">
                     <label for="emailAdd">Email Address</label>
-                    <input type="email" name="emailAdd" id="emailAdd" autocomplete="off" required>
+                    <input class="form-control" type="email" name="emailAdd" id="emailAdd" autocomplete="off" required>
                 </div>
-                <div class="field input">
+                <div class="form-group">
                     <label for="courseEnrolled">Enrolled Course</label>
-                    <select name="courseEnrolled" id="courseEnrolled" required> 
+                    <select class="form-control" name="courseEnrolled" id="courseEnrolled" required> 
                         <option value="">choose enrolled course</option>
                         <option value=1>BSIT</option>
                         <option value=2>BSCS</option>
@@ -94,12 +96,12 @@
                         <option value=4>BSBM</option>
                     </select>
                 </div>
-                <div class="field input">
+                <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" name="password" id="password" autocomplete="off" required>
+                    <input class="form-control" type="password" name="password" id="password" autocomplete="off" required>
                 </div>
-                <div class="field">
-                    <input type="submit" name="submit" class="btn" value="Sign Up" required>
+                <div class="form-group">
+                    <input class="form-control btn btn-primary" type="submit" name="submit" value="Submit" required>
                 </div>
                 <div class="links">
                     Already have an account? <a href="login.php">Login Now</a>
