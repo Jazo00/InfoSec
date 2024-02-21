@@ -1,4 +1,6 @@
 <?php
+
+session_start();
 include 'config.php';
 
 $id=$_GET['updateid'];
@@ -41,6 +43,9 @@ if(isset($_POST['submit'])){
                                         course_id=$courseEnrolled,
                                         student_status=$studentStatus
                                     WHERE id=$id");
+  
+  $logs = new UserLogs($conn);
+  $logs->create('Admin Page', 'Update Student Profile', $_SESSION['id'], $id);
   
   if ($edit_query) {
       header('location:admin.php');

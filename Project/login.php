@@ -25,7 +25,6 @@
                 header("Location: index.php");
             }
             
-            include("config.php");
             if(isset($_POST['submit'])){
                 $email = mysqli_real_escape_string($conn,$_POST['emailAdd']);
                 $password = mysqli_real_escape_string($conn,$_POST['password']);
@@ -43,7 +42,12 @@
                 if(is_array($userRow) && !empty($userRow)){
 
                     if($userRow['user_type'] == 1) {
+                        $_SESSION['id'] = $userRow['id'];
                         $_SESSION['isAdmin'] = $userRow['user_email'];
+
+                        $logs = new UserLogs($conn);
+                        $logs->create('Login Page', 'Admin User Login', $userRow['id'], 0);
+
                         header('location:admin.php');
                     }
 
@@ -63,6 +67,9 @@
                         $_SESSION['lastName'] = $studentRow['student_lastname'];
                         $_SESSION['courseEnrolled'] = $studentRow['course_name'];
                         $_SESSION['id'] = $studentRow['id'];
+
+                        $logs = new UserLogs($conn);
+                        $logs->create('Login Page', 'User Login', $userRow['id'], $studentRow['id']);
 
                         header('location:index.php');
                     } else {

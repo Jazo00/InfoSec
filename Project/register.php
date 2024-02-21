@@ -47,6 +47,9 @@
                                         VALUES (?,?,?,?,?,?,?)";
                         $student = $conn->execute_query($studeSql, [$conn->insert_id, $studentNumber, strval($firstName), $middleInitial, strval($lastName), $emailAdd, $courseEnrolled]);
 
+                        $logs = new UserLogs($conn);
+                        $logs->create('Registration Page', 'Register User', $conn->insert_id, $conn->insert_id);
+
                         header('location:index.php');
                     }
 

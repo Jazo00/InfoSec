@@ -51,6 +51,9 @@
                                                         course_id='$courseEnrolled' 
                                                     WHERE id=$id") or die("Error Occured");
                     
+                    $logs = new UserLogs($conn);
+                    $logs->create('Profile Page', 'Update Student Profile', $id, $id);
+                    
                     if($edit_query){
                         echo "<div class='message'>
                                 <p>Your Profile is Up to date!</p>
