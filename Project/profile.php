@@ -1,8 +1,5 @@
 <?php
-    session_start();
-    if(!isset($_SESSION['valid'])){
-        header("Location: login.php");
-    }
+    include("session.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +19,6 @@
         <a href="index.php">Home</button></a>
         <?php
 
-        include("config.php");
         $id = $_SESSION['id'];
         $query = mysqli_query($conn,"SELECT 
                                         s.*, 

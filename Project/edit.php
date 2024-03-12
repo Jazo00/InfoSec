@@ -1,10 +1,5 @@
 <?php
-    session_start();
-
-    include("config.php");
-    if(!isset($_SESSION['valid'])){
-        header("Location: login.php");
-    }
+    include("session.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -99,6 +94,10 @@
                 <div class="field input">
                     <label for="emailAdd">Email Address</label>
                     <input type="email" name="emailAdd" id="emailAdd" autocomplete="off" disabled value="<?php echo $res_emailAdd ?>">
+                </div>
+                <div class="field input">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" autocomplete="off" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
                 </div>
                 <br>
                 <div class="form-group">

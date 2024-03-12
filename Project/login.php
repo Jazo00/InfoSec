@@ -1,9 +1,5 @@
 <?php
-    session_start();
-    include("config.php");
-    if(isset($_SESSION['valid'])){
-        header("Location: index.php");
-    }
+    include("session.php");
 ?>
 <!DOCTYPE html>
 <html>
